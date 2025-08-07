@@ -1,0 +1,34 @@
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*.log
+*.swp
+*.swo
+
+
+.Python
+__pycache__/
+venv/
+env/
+*.pyc
+*.pyd
+*.pyo
+
+.terraform/           # Diretório de trabalho do Terraform
+*.tfplan              # Arquivos de plano (podem conter dados sensíveis)
+*.tfstate             # Arquivo de estado do Terraform (NUNCA versionar localmente)
+*.tfstate.backup      # Backups do arquivo de estado
+crash.log             # Logs de crash do Terraform
+override.tf           # Arquivos de override (se usados para testes locais)
+*.tfvars              # Arquivos de variáveis (ex: dev.tfvars, prod.tfvars)
+*.tfvars.json         # Arquivos de variáveis JSON (ex: secrets.tfvars.json)
+
+
+*.pem                 # Chaves SSH (nunca versionar)
+*.key                 # Chaves de criptografia (nunca versionar)
+*.cert                # Certificados (nunca versionar)
+.env                  # Arquivos de variáveis de ambiente
+.terraform.lock.hcl   # Mantenha este COMENTADO se você quiser versionar as dependências exatas dos provedores.
+                      # Caso contrário, descomente para ignorar.
+                      # Boa prática: versionar para consistência nas versões de provedores.
