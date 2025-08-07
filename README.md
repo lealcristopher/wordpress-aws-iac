@@ -1,5 +1,3 @@
----
-
 # Highly Available & Secure WordPress E-commerce on AWS with Terraform & Ansible
 
 ## Overview
@@ -53,6 +51,6 @@ Designed as a personal learning journey and a portfolio showcase, this repositor
 
 ## About the Author
 
-Hi, I'm Cris, a Computer Engineer, Certified Ethical Hacker, and entrepreneur with a strong focus on cybersecurity. I'm leveraging AI for advanced technical support and strategic analysis. This project reflects my commitment to building secure, highly available systems and my interest in applying IaC and automation to real-world challenges, especially within the e-commerce security domain.
+Hi, I'm Cristopher, a Computer Engineer, Ethical Hacker, and entrepreneur with a strong focus on cybersecurity. I'm leveraging AI for advanced technical support and strategic analysis. This project reflects my commitment to building secure, highly available systems and my interest in applying IaC and automation to real-world challenges, especially within the e-commerce security domain.
 
 ---
