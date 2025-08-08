@@ -15,7 +15,7 @@ env/
 *.pyd
 *.pyo
 
-*.terraform/           # Diretório de trabalho do Terraform
+.terraform/           # Diretório de trabalho do Terraform
 *.tfplan              # Arquivos de plano (podem conter dados sensíveis)
 *.tfstate             # Arquivo de estado do Terraform (NUNCA versionar localmente)
 *.tfstate.backup      # Backups do arquivo de estado
