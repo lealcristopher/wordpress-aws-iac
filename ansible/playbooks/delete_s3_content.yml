@@ -1,0 +1,35 @@
+- name: Destroy index.html from S3 bucket for Terraform destroy
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    bucket_name: ""
+    aws_profile: "aws_terraform" # Variável declarada
+
+  tasks:
+    - name: Verify if bucket name was informed
+      ansible.builtin.fail:
+        msg: "Error: The S3 bucket name was not provided. Use -e 'bucket_name=<SEU_BUCKET>'"
+      when: bucket_name == ""
+
+    - name: Remove index.html from S3 bucket
+      amazon.aws.s3_object:
+        bucket: "{{ bucket_name }}"
+        object: "index.html"
+        mode: "delobj"  # <--- CORRIGIDO PARA 'delobj'
+        region: "{{ lookup('env', 'AWS_REGION') | default('us-east-1') }}"
+        profile: "{{ aws_profile }}"
+      register: s3_delete_status
+
+    - name: Show deletion status
+      ansible.builtin.debug:
+        msg: "The index.html has been successfully removed from {{ bucket_name }}."
+      # O 'delobj' vai reportar changed=true se o objeto foi deletado,
+      # e changed=false se o objeto já não existia.
+      when: s3_delete_status.changed
+
+    - name: Show if index.html was already absent (or not found for deletion)
+      ansible.builtin.debug:
+        msg: "The index.html was already absent or not found in {{ bucket_name }} for deletion."
+      when: not s3_delete_status.changed

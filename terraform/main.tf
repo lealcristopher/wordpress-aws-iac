@@ -12,16 +12,25 @@ provider "aws" {
   profile = "aws_terraform"
 }
 
-resource "aws_s3_bucket" "test_bucket" {
-  bucket = "${var.project_name}-test-bucket-${random_id.id.hex}"
 
-  tags = {
-    Name        = "${var.project_name}-test-bucket"
-    Environment = "Dev"
-    ManagedBy   = "Terraform"
-    Project     = var.project_name
-  }
+
+
+# --- Saídas Úteis ---
+
+# Output do endpoint do website S3 para acesso direto
+output "test_bucket_website_endpoint" {
+  description = "Endpoint do website S3 para o bucket de teste"
+  value       = aws_s3_bucket_website_configuration.test_bucket_website.website_endpoint
 }
+
+# Output da URL do bucket (útil para uploads via CLI)
+output "test_bucket_url" {
+  description = "URL do bucket S3 de teste"
+  value       = "s3://${aws_s3_bucket.test_bucket.id}"
+}
+
+# Output do nome do bucket
+
 
 resource "random_id" "id" {
   byte_length = 8

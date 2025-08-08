@@ -1,0 +1,31 @@
+- name: Configure S3 Website and Public Access # Este é o nome do Play
+  hosts: localhost                         # O play será executado na máquina local
+  connection: local                        # Conexão local, pois está interagindo com a AWS via SDK
+  gather_facts: no                         # Não precisamos coletar fatos sobre o host para esta tarefa
+
+  tasks: # Aqui começa a lista de tarefas para este Play
+    - name: Configure S3 bucket for static website hosting (using s3_website module)
+      community.aws.s3_website:
+        name: "{{ bucket_name }}" # <-- ALTERADO PARA 'name'
+        state: present
+        index_document: index.html
+        error_document: error.html # Remova esta linha se você não tiver um error.html
+
+    - name: Apply public read policy to S3 bucket (using s3_bucket module for policy)
+      amazon.aws.s3_bucket:
+        name: "{{ bucket_name }}"
+        state: present
+        public_access: True
+        policy: |
+          {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "PublicReadGetObject",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::{{ bucket_name }}/*"
+              }
+            ]
+          }
