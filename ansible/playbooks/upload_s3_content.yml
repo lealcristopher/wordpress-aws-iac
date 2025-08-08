@@ -1,0 +1,31 @@
+- name: Upload de index.html to S3 bucket created by Terraform
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    bucket_name: ""
+    local_index_html_path: "{{ playbook_dir }}/../files/index.html"
+    aws_profile: "aws_terraform" # Variável declarada
+
+  tasks:
+    - name: Verify if bucket name was informed
+      ansible.builtin.fail:
+        msg: "Error: The S3 bucket name was not provided. Use -e 'bucket_name=<SEU_BUCKET>'"
+      when: bucket_name == ""
+
+    - name: Upload do index.html to S3 bucket
+      amazon.aws.s3_object:
+        bucket: "{{ bucket_name }}"
+        object: "index.html"
+        src: "{{ local_index_html_path }}"
+        mode: "put"
+        # REMOVA ESTA LINHA: permission: "public-read"
+        region: "{{ lookup('env', 'AWS_REGION') | default('us-east-1') }}"
+        profile: "{{ aws_profile }}"
+      register: s3_upload_status
+
+    - name: Show upload status
+      ansible.builtin.debug:
+        msg: "The upload of index.html to {{ bucket_name }} has been successfully completed. URL: {{ s3_upload_status.url }}"
+      when: s3_upload_status.failed == false
