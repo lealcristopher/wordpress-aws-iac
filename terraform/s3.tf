@@ -1,7 +1,10 @@
 # Se você já tem a definição do bucket, mantenha-a.
 # Apenas a incluo aqui para contexto.
+
+	
+
 resource "aws_s3_bucket" "test_bucket" {
-  bucket = "${var.project_name}-test-bucket-${random_id.id.hex}"
+  bucket = "www.${local.full_subdomain_name}"
 
   tags = {
     Name        = "${var.project_name}-test-bucket"
@@ -10,6 +13,8 @@ resource "aws_s3_bucket" "test_bucket" {
     Project     = var.project_name
   }
 }
+
+
 
 # --- Novos Recursos para Configuração de Website ---
 
