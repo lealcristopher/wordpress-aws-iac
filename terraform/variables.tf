@@ -14,5 +14,6 @@ variable "project_name" {
 variable "cloudflare_api_token" {
   description = "Token da api cloudflare"
   type      = string
-  default   = "dpihUu5bHJZ6dXaOhGSzCxmck71Wjb3KQ81H-AMP"
+  default   = ""
 }
+
