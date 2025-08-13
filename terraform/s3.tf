@@ -41,6 +41,11 @@ resource "aws_s3_bucket_policy" "test_bucket_policy" {
       },
     ]
   })
+
+   depends_on = [
+    aws_s3_bucket_public_access_block.test_bucket_public_access_block,
+    aws_s3_bucket_website_configuration.test_bucket_website
+  ]
 }
 
 

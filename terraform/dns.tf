@@ -1,6 +1,10 @@
 resource "aws_route53_zone" "delegated_subdomain_zone" {
   name = local.full_subdomain_name
   comment = "Managed by Terraform for ${local.full_subdomain_name}"
+  tags = {
+    Name    = local.full_subdomain_name
+    Project = var.project_name
+  }
 }
 
 
@@ -29,17 +33,31 @@ resource "cloudflare_record" "ns_delegation" {
 }
 
 
-resource "aws_route53_record" "s3_website_alias" {
+#resource "aws_route53_record" "s3_website_alias" {
 
-  zone_id = aws_route53_zone.delegated_subdomain_zone.zone_id 
-  name    = "www.${local.full_subdomain_name}" 
-  type    = "A" 
+#  zone_id = aws_route53_zone.delegated_subdomain_zone.zone_id 
+#  name    = "www.${local.full_subdomain_name}" 
+#  type    = "A" 
+
+#  alias {
+#    name                   = aws_s3_bucket_website_configuration.test_bucket_website.website_endpoint
+#    zone_id                = aws_s3_bucket.test_bucket.hosted_zone_id 
+#    evaluate_target_health = false 
+#  }
+#}
+
+
+resource "aws_route53_record" "website_alias_record" {
+  zone_id = aws_route53_zone.delegated_subdomain_zone.zone_id
+  name    = local.website_domain_name 
+  type    = "A"
 
   alias {
-    name                   = aws_s3_bucket_website_configuration.test_bucket_website.website_endpoint
-    zone_id                = aws_s3_bucket.test_bucket.hosted_zone_id 
-    evaluate_target_health = false 
+    name                   = aws_cloudfront_distribution.website_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.website_distribution.hosted_zone_id
+    evaluate_target_health = false
   }
-}
 
+  depends_on = [aws_route53_zone.delegated_subdomain_zone]
+}
 
