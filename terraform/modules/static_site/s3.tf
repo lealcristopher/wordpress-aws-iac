@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "test_bucket" {
-  bucket = "www.${local.full_subdomain_name}"
+  bucket = var.domain
 
   tags = {
     Name        = "${var.project_name}-test-bucket"

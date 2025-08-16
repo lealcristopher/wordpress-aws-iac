@@ -1,7 +1,7 @@
 resource "aws_cloudfront_distribution" "website_distribution" {
   origin {
     domain_name = aws_s3_bucket_website_configuration.test_bucket_website.website_endpoint 
-    origin_id   = "S3WebsiteOrigin-${local.website_domain_name}"
+    origin_id   = "S3WebsiteOrigin-${var.domain}"
 
     custom_origin_config {
       http_port              = 80
@@ -13,15 +13,15 @@ resource "aws_cloudfront_distribution" "website_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "CloudFront distribution for ${local.website_domain_name}"
+  comment             = "CloudFront distribution for ${var.domain}"
   default_root_object = "index.html" 
 
-  aliases = [local.website_domain_name] 
+  aliases = [var.domain] 
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = "S3WebsiteOrigin-${local.website_domain_name}"
+    target_origin_id = "S3WebsiteOrigin-${var.domain}"
 
     viewer_protocol_policy = "redirect-to-https" # Redireciona HTTP para HTTPS
     min_ttl                = 0

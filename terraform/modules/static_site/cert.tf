@@ -1,6 +1,6 @@
 resource "aws_acm_certificate" "website_cert" {
   provider          = aws.us_east_1 
-  domain_name       = local.website_domain_name
+  domain_name       = var.domain
   validation_method = "DNS"
 
 
@@ -21,17 +21,17 @@ resource "aws_route53_record" "acm_cert_validation_record" {
     for dvo in aws_acm_certificate.website_cert.domain_validation_options : dvo.domain_name => dvo
   }
 
-  zone_id = aws_route53_zone.delegated_subdomain_zone.zone_id
+  zone_id = var.zone_id
   name    = each.value.resource_record_name
   type    = each.value.resource_record_type
   records = [each.value.resource_record_value]
   ttl     = 60 
 
   
-  depends_on = [
-    aws_route53_zone.delegated_subdomain_zone,
-    aws_acm_certificate.website_cert
-  ]
+  #depends_on = [
+  #  aws_route53_zone.delegated_subdomain_zone,
+  #  aws_acm_certificate.website_cert
+  #]
 }
 
 

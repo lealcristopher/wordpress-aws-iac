@@ -28,7 +28,14 @@ provider "cloudflare" {
 }
 
 
-
+module "static_site" {
+  source = "./modules/static_site"
+  project_name = "wordpress-aws-iac"
+  aws_region = var.aws_region
+  domain = "www.${local.full_subdomain_name}"
+  zone_id = aws_route53_zone.delegated_subdomain_zone.zone_id
+  
+}
 
 #resource "random_id" "id" {
 #  byte_length = 8

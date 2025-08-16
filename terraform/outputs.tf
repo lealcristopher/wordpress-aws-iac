@@ -1,7 +1,4 @@
-output "test_bucket_name" {
-  description = "Nome do bucket S3 de teste criado."
-  value       = aws_s3_bucket.test_bucket.id
-}
+
 
 output "aws_account_id" {
   description = "ID da conta AWS que está sendo usada."
@@ -27,21 +24,27 @@ output "delegated_subdomain_fqdn" {
   value       = local.full_subdomain_name
 }
 
+
+output "test_bucket_name" {
+  description = "Nome do bucket S3 de teste criado."
+  value       = module.static_site.bucket_name
+}
+
 output "bucket_domain" {
    description = ""
-   value = aws_s3_bucket_website_configuration.test_bucket_website.website_domain
+   value = module.static_site.bucket_website_domain
 }
 
 
 
 output "test_bucket_website_endpoint" {
   description = "Endpoint do website S3 para o bucket de teste"
-  value       = aws_s3_bucket_website_configuration.test_bucket_website.website_endpoint
+  value       = module.static_site.bucket_website_endpoint
 }
 
 output "test_bucket_url" {
   description = "URL do bucket S3 de teste"
-  value       = "s3://${aws_s3_bucket.test_bucket.id}"
+  value       = module.static_site.bucket_url
 }
 
 
